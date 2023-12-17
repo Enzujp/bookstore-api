@@ -1,0 +1,4 @@
+Things to implement
+Add Users
+Add Userprofile
+Allow communication, like comments
