@@ -1,4 +1,6 @@
 Things to implement
 Add Users
 Add Userprofile
-Allow communication, like comments
+Allow communication, like comments.
+
+editing go module, use: go mod edit -module new module name 

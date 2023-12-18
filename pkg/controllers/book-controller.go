@@ -6,43 +6,77 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
-	"bookstore-api/pkg/utils"
-	"bookstore-api/pkg/models"
+	"github.com/enzujp/bookstore-api/pkg/utils"
+	"github.com/enzujp/bookstore-api/pkg/models"
 )
 
 
 var newBook models.Book  // creating a new book using imported model
 
-func getBook(w http.ResponseWriter, r *http.Request) {
-	newBooks := models.getAllBooks()
+func GetBook(w http.ResponseWriter, r *http.Request) {
+	newBooks := models.GetAllBooks()
 	res, _ := json.Marshal(newBooks) // convert to json
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
 
-func getBookById(w http.ResponseWriter, r *http.Request) {
+func GetBookById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r) // request being the bookId
 	bookId := vars["bookId"]
 	ID, err:= strconv.ParseInt(bookId, 0, 0)
 	if err != nil {
 		fmt.Println("Error while Parsing")
 	}
-	bookDetails, _ := models.getBookById(ID)
+	bookDetails, _ := models.GetBookById(ID)
 	res, _ := json.Marshal(bookDetails)
 	w.Header().Set("Content-Type", "pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
 
-func createBook(w http.ResponseWriter, r *http.Request) {
+func CreateBook(w http.ResponseWriter, r *http.Request) {
 	createBook := &models.Book{}
-	utils.parseBody(r, createBook)
-	b := createBook.createBook() // referring to model
+	utils.ParseBody(r, createBook)
+	b := createBook.CreateBook() // referring to model
 	res, _ := json.Marshal(b)
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
 
 
-func deleteBook(w http.ResponseWriter, r *http.Request)
+func DeleteBook(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	bookId := vars["bookId"]
+	ID, err := strconv.ParseInt(bookId, 0, 0); if err != nil{
+		fmt.Println("Error encountered when parsing")
+	}
+	book := models.DeleteBook(ID)
+	res, _ := json.Marshal(book) // send book back to user
+	w.Header().Set("Content-Type", "pkglication/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+
+func UpdateBook(w http.ResponseWriter, r *http.Request) {
+	var updateBook = &models.Book{}
+	utils.ParseBody(r, updateBook)
+	vars := mux.Vars(r)
+	bookId := vars["bookId"]
+	ID, err := strconv.ParseInt(bookId, 0, 0); if err != nil {
+		fmt.Println("Error while parsing")
+	}
+	bookDetails, db := models.GetBookById(ID)
+	if updateBook.Name != "" {
+		bookDetails.Name = updateBook.Name
+	}
+	if updateBook.Author != "" {
+		bookDetails.Author = updateBook.Author
+	}
+	if updateBook.Publication != "" {
+		bookDetails.Publication = updateBook.Publication
+	}
+
+	
+}
+

@@ -3,16 +3,16 @@ package main
 import (
 	"log"
 	"net/http"
-	"github.com/gorrila/mux"
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm/dialects/mysql"
-	"/bookstore-api/pkg/routes"
+	"github.com/enzujp/bookstore-api/pkg/routes"
 
 )
 
 
 func main (){
 	r:= mux.NewRouter()
-	routes.registerBookStoreRoutes(r)
+	routes.RegisterBookStoreRoutes(r)
 	http.Handle("/", r,)
 	log.Fatal(http.ListenAndServe("localhost:8080", r))
 }
