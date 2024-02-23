@@ -11,7 +11,6 @@ import (
 )
 
 
-var newBook models.Book  // creating a new book using imported model
 
 func GetBook(w http.ResponseWriter, r *http.Request) {
 	newBooks := models.GetAllBooks()
@@ -66,7 +65,7 @@ func UpdateBook(w http.ResponseWriter, r *http.Request) {
 	ID, err := strconv.ParseInt(bookId, 0, 0); if err != nil {
 		fmt.Println("Error while parsing")
 	}
-	bookDetails, db := models.GetBookById(ID)
+	bookDetails, _ := models.GetBookById(ID)
 	if updateBook.Name != "" {
 		bookDetails.Name = updateBook.Name
 	}
